@@ -1,0 +1,79 @@
+# LectureLens full stack: Postgres + Redis + API + RQ worker + frontend.
+# Default providers are `mock` (no model downloads). See .env.example.
+#
+#   cp .env.example .env
+#   docker compose up --build
+#   open http://localhost:8080
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lecturelens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lecturelens}
+      POSTGRES_DB: ${POSTGRES_DB:-lecturelens}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lecturelens}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  api:
+    build:
+      context: ./backend
+    environment: &api_env
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-lecturelens}:${POSTGRES_PASSWORD:-lecturelens}@db:5432/${POSTGRES_DB:-lecturelens}
+      REDIS_URL: redis://redis:6379/0
+      STORAGE_ROOT: /data/storage
+      INLINE_JOBS: ${INLINE_JOBS:-false}
+      CORS_ORIGINS: '["http://localhost:8080","http://127.0.0.1:8080","http://localhost:5173"]'
+      ASR_PROVIDER: ${ASR_PROVIDER:-mock}
+      LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+      TRANSLATION_PROVIDER: ${TRANSLATION_PROVIDER:-mock}
+    volumes:
+      - storage:/data/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ./backend
+    # Same image, different command: RQ worker instead of the API
+    entrypoint: ["sh", "/docker/worker-entrypoint.sh"]
+    environment: *api_env
+    volumes:
+      - storage:/data/storage
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  storage:

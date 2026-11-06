@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+.vite/
+*.local
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Runtime data
+backend/data/
+storage/
+uploads/
+*.log
+.DS_Store
+
+# Models (large — never commit)
+models/
+*.nemo
+*.gguf
+*.safetensors
+
+# Editors / IDE
+.idea/
+.vscode/
+
+# Coverage
+coverage/
+htmlcov/
+.coverage

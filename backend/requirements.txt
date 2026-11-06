@@ -1,0 +1,39 @@
+# Core web stack (Python 3.11/3.12 compatible)
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+pydantic>=2.8,<3.0
+pydantic-settings>=2.4,<3.0
+python-multipart>=0.0.9
+sqlalchemy>=2.0.30,<2.1
+alembic>=1.13,<2.0
+psycopg2-binary>=2.9.9
+redis>=5.0,<6.0
+rq>=1.16,<2.0
+httpx>=0.27,<1.0
+python-dotenv>=1.0,<2.0
+
+# Audio
+# numpy used by segmentation (energy VAD)
+numpy>=1.26,<3.0
+
+# Testing
+pytest>=8.2,<9.0
+pytest-asyncio>=0.23
+
+# --- Optional heavy ML dependencies (install only for real inference) ---
+# They are intentionally NOT installed by default so that startup never
+# downloads multi-GB checkpoints. See docs/model-selection.md.
+#
+# Real ASR (IndicConformer via AI4Bharat NeMo):
+#   follow https://github.com/AI4Bharat/IndicConformerASR  (NeMo nemo-v2)
+#   nemo-toolkit[asr]
+#
+# Real LLM (Param-1):
+#   torch>=2.2
+#   transformers>=4.56
+#   accelerate
+#
+# Real translation (IndicTrans2 HF interface):
+#   torch>=2.2
+#   transformers>=4.56
+#   indictrans-toolkit (IndicTransToolkit)

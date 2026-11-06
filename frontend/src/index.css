@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 240 10% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 4% 16%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 4% 16%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 88%;
+    --ring: 239 84% 67%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-zinc-200;
+  }
+
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04";
+  }
+}
+
+@layer utilities {
+  .prose-ll h2 {
+    @apply mt-6 mb-2 text-lg font-semibold text-zinc-900;
+  }
+  .prose-ll h3 {
+    @apply mt-4 mb-1.5 text-base font-semibold text-zinc-800;
+  }
+  .prose-ll p {
+    @apply mb-3 leading-relaxed text-zinc-700;
+  }
+  .prose-ll ul {
+    @apply mb-3 list-disc space-y-1.5 pl-6 text-zinc-700;
+  }
+  .prose-ll li {
+    @apply leading-relaxed;
+  }
+}
+
+/* thin scrollbars for workspace panes */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
