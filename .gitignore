@@ -1,42 +1,87 @@
-# Python
+# ============================================================
+# LectureLens .gitignore
+# ============================================================
+
+# ---------------- Python / backend ----------------
 __pycache__/
 *.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+*.egg
 .venv/
 venv/
+env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-*.egg-info/
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+.tox/
+.nox/
 
-# Node
+# ---------------- Node / frontend ----------------
 node_modules/
 dist/
 .vite/
+.npm/
+.yarn/
 *.local
 
-# Env & secrets
+# ---------------- Env & secrets ----------------
 .env
 .env.*
 !.env.example
 
-# Runtime data
-backend/data/
-storage/
-uploads/
-*.log
-.DS_Store
+# ---------------- Runtime data (never commit) ----------------
+# uploads, processed audio, generated exports, process pid/logs
+/backend/storage/
+/.run/
+*.pid
 
-# Models (large — never commit)
-models/
+# ---------------- Logs ----------------
+*.log
+logs/
+
+# ---------------- Model weights (large; download separately) ----------------
+# Root-level weights dir only — do NOT ignore backend/app/models (source)
+/models/
 *.nemo
 *.gguf
 *.safetensors
+*.pt
+*.pth
+*.onnx
+*.ckpt
+# raw weight dumps (not source modules)
+*.bin
 
-# Editors / IDE
+# ---------------- Media generated at runtime ----------------
+# Demo/uploaded audio lives under backend/storage (ignored above).
+# Ignore stray media at repo root or in temp folders:
+/*.wav
+/*.mp3
+/*.m4a
+/*.flac
+/*.ogg
+/*.aac
+
+# ---------------- Evaluation outputs (regenerate with scripts) ----------------
+/evaluation/results/*.csv
+
+# ---------------- Editors / OS / office ----------------
 .idea/
 .vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.~lock.*
+\#*\#
+~$*
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# ---------------- Jupyter ----------------
+.ipynb_checkpoints/
